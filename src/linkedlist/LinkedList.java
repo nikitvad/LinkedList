@@ -3,30 +3,44 @@ package linkedlist;
 public class LinkedList<T> {
 
     private LinkedListNode<T> first;
+    private LinkedListNode<T> last;
+    private LinkedListNode<T> current;
 
     public void add(T item) {
-        LinkedListNode<T> node = new LinkedListNode<>(item);
-        node.setNextObject(first);
-        first = node;
+        if (first == null) {
+            first = new LinkedListNode<>(item);
+            current = first;
+            last = first;
+        } else {
+
+            LinkedListNode<T> temp = new LinkedListNode<>(item);
+            temp.setPrevObject(last);
+            last.setNextObject(temp);
+            last = temp;
+        }
     }
 
     public void deleteLastItem() {
-        first = first.getNextNode();
+        last = last.getPrevObject();
+        last.setNextObject(null);
     }
 
-    public void deleteByComparator(T comparableCriteria, LinkedListComparator<T> comparator) {
+    public void deleteByComparator(T compareTo, LinkedListComparator<T> comparator) {
         LinkedListNode<T> current = first;
-        LinkedListNode<T> prevItem = null;
-
 
         while (current != null) {
-
-            if (comparator.compare(comparableCriteria, current.getObject()) < 0) {
-                if (prevItem != null) {
-                    prevItem.setNextObject(current.getNextNode());
+            last = current;
+            if (comparator.compare(compareTo, current.getObject()) < 0) {
+                if (current.getPrevObject() == null) {
                     current = current.getNextNode();
-                }else{
-                    first = first.getNextNode();
+                    setFirst(current);
+                    continue;
+
+                } else {
+                    LinkedListNode<T> temp = current.getPrevObject();
+                    temp.setNextObject(current.getNextObject());
+                    current = temp;
+                    continue;
                 }
 
             }
@@ -36,16 +50,25 @@ public class LinkedList<T> {
     }
 
     public boolean hasNext() {
-        return first != null;
+        return current != null;
+    }
+
+    private void setFirst(LinkedListNode<T> listNode){
+        first = listNode;
+        current = first;
+    }
+
+    public void resetPointer() {
+        current = first;
     }
 
     public T getNext() {
-        LinkedListNode<T> temp = first;
-        first = first.getNextNode();
+        LinkedListNode<T> temp = current;
+        current = current.getNextNode();
         return temp.getObject();
     }
 
     public interface LinkedListComparator<T> {
-        int compare(T comparableFirs, T comparableLast);
+        int compare(T compareTo, T comparableValue);
     }
 }

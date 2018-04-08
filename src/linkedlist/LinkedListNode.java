@@ -3,6 +3,7 @@ package linkedlist;
 public class LinkedListNode<T> {
     private T object;
 
+    private LinkedListNode<T> prevObject;
     private LinkedListNode<T> nextObject;
 
     public LinkedListNode(T object) {
@@ -25,4 +26,15 @@ public class LinkedListNode<T> {
         this.nextObject = nextObject;
     }
 
+    public LinkedListNode<T> getPrevObject() {
+        return prevObject;
+    }
+
+    public void setPrevObject(LinkedListNode<T> prevObject) {
+        this.prevObject = prevObject;
+    }
+
+    public LinkedListNode<T> getNextObject() {
+        return nextObject;
+    }
 }

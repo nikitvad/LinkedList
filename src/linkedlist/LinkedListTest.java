@@ -4,22 +4,24 @@ public class LinkedListTest {
     public static void main(String[] args) {
         LinkedList<Integer> linkedList = new LinkedList<>();
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 15; i > 0; i--) {
             linkedList.add(i);
         }
 
         linkedList.deleteByComparator(7, new LinkedList.LinkedListComparator<Integer>() {
             @Override
-            public int compare(Integer comparableFirs, Integer comparableLast) {
-                if (comparableFirs > comparableLast) {
+            public int compare(Integer compareTo, Integer comparableValue) {
+                if (compareTo > comparableValue) {
                     return 1;
-                } else if (comparableFirs < comparableLast) {
+                } else if (compareTo < comparableValue) {
                     return -1;
                 } else {
                     return 0;
                 }
             }
         });
+
+        linkedList.deleteLastItem();
 
         while (linkedList.hasNext()) {
             System.out.println(linkedList.getNext());
